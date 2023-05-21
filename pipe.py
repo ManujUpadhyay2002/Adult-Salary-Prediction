@@ -1,10 +1,9 @@
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, LabelEncoder, FunctionTransformer
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 import pandas as pd
 
-# test = pd.DataFrame([25,'Private',7,'Never-married','Machine-op-inspct','Own-child','Black','Male',40]).transpose()
 df = pd.read_csv('./Data/adult.csv')
 df.drop_duplicates(inplace=True)
 df.drop(columns=['fnlwgt', 'capital-gain', 'capital-loss',
@@ -38,7 +37,7 @@ pipe = Pipeline(
         ('Scaling Data', trf1),
         ('Encoding Data', trf2),
         ('data', ft),
-        ('classifier', MultinomialNB())
+        ('classifier', DecisionTreeClassifier())
     ]
 )
 
@@ -46,5 +45,3 @@ pipe.fit(df.iloc[:, :9].copy(), df['income'].copy())
 
 def predict(data):
     return pipe.predict(data)
-
-# print(pipe.predict(test))
